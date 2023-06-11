@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &52015223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 52015224}
+  m_Layer: 6
+  m_Name: ground check position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &52015224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52015223}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1357211374}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &656833777
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,7 +443,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -6.799988, y: -203.68747}
+  m_AnchoredPosition: {x: -6.800049, y: -203.6875}
   m_SizeDelta: {x: -462.49, y: -407.3749}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &830397037
@@ -487,6 +518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TextureLoaderInstance: {fileID: 852762937}
   ChunkMaterial: {fileID: 2100000, guid: c21caa2db23032a48be966ef6adf5e80, type: 2}
+  ChunkPhysicMaterial: {fileID: 13400000, guid: 1d75145e928584f22b6bb77fed78402b, type: 2}
   droppedItem: {fileID: 6427164768734542920, guid: 115f5810866caf9499b8d1d9bb9372ef, type: 3}
   NoiseScale: {x: 0.2, y: 0.2}
   NoiseOffset: {x: 36.4, y: 32.44}
@@ -796,7 +828,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -24.556568, y: -0.000045776367}
+  m_AnchoredPosition: {x: -24.55658, y: -0.000061035156}
   m_SizeDelta: {x: -292.25, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &863792039
@@ -1307,11 +1339,12 @@ Transform:
   m_GameObject: {fileID: 1357211368}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 200, z: -17.4}
-  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_LocalScale: {x: 0.9, y: 1, z: 0.9}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 963194228}
   - {fileID: 1825378384}
+  - {fileID: 52015224}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1378,7 +1411,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
@@ -1395,32 +1428,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d60676f6d8f66b9498187cdd3b66a66f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  waitToFallTime: 3
+  canMove: 1
   viewPosition: {fileID: 963194228}
-  layer:
+  groundLayerMask:
     serializedVersion: 2
     m_Bits: 1
-  state: 0
-  prevState: 0
-  canMove: 1
   walkingSpeed: 6
-  runningSpeed: 10
-  crouchingSpeed: 2
-  acceleration: 20
-  deceleration: 20
-  maxSlopeAngle: 0
-  input: {x: 0, y: 0}
---- !u!65 &1357211380
-BoxCollider:
+  runningSpeed: 16
+  crouchingSpeed: 4
+  acceleration: 0.1
+  deceleration: 0.1
+  jumpHeight: 1.2
+  jumpGravity: 15
+  fallGravity: 20
+  maxFallSpeed: 40
+  coyoteTime: 0.1
+  jumpBuffer:
+    threshold: 0.2
+  groundCheckRadius: 0.5
+  groundCheck: {fileID: 52015224}
+--- !u!136 &1357211380
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357211368}
-  m_Material: {fileID: 13400000, guid: 62c3a69727944c644b1d4f930e564d7b, type: 2}
+  m_Material: {fileID: 13400000, guid: 1d75145e928584f22b6bb77fed78402b, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1469980601
 GameObject:
@@ -1554,7 +1594,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -143.65662, y: -0.000045776367}
+  m_AnchoredPosition: {x: -143.65662, y: -0.000061035156}
   m_SizeDelta: {x: -292.25, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1628415150

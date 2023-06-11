@@ -12,6 +12,7 @@ public class WorldGenerator : MonoBehaviour
 
     [SerializeField] private TextureLoad TextureLoaderInstance;
     [SerializeField] private Material ChunkMaterial;
+    [SerializeField] private PhysicMaterial ChunkPhysicMaterial;
     [SerializeField] private GameObject droppedItem;
     [Space]
     public Vector2 NoiseScale = Vector2.one;
@@ -80,6 +81,7 @@ public class WorldGenerator : MonoBehaviour
             newChunkFilter.mesh = meshToUse;
             newChunkRenderer.material = ChunkMaterial;
             collider.sharedMesh = newChunkFilter.mesh;
+            collider.material = ChunkPhysicMaterial;
         }
     }
 
@@ -119,7 +121,7 @@ public class WorldGenerator : MonoBehaviour
             }
 
             if (!special) WorldData[DataPosition][coordsToChange.x, coordsToChange.y, coordsToChange.z] = BlockType;
-            else Instantiate(special, WorldPosition, Quaternion.AngleAxis(FindObjectOfType<PlayerMovement>().rb.transform.eulerAngles.y, Vector3.up));
+            else Instantiate(special, WorldPosition, Quaternion.AngleAxis(FindObjectOfType<PlayerMovement>().transform.eulerAngles.y, Vector3.up));
 
             UpdateChunk(coords);
         }
