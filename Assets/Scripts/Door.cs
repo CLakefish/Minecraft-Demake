@@ -11,7 +11,7 @@ public class Door : MonoBehaviour, IInteractObj
 {
     [SerializeField] GameObject openDoor;
     [SerializeField] GameObject closedDoor;
-    bool isOpen = false;
+    bool isOpen = true;
 
     public void onInteract()
     {

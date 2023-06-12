@@ -72,13 +72,17 @@ public class DataGenerator
                     float PerlinCoordY = NoiseOffset.y + (z + (offset.z * 16f)) / ChunkSize.z * NoiseScale.y;
                     int HeightGen = Mathf.RoundToInt(Mathf.PerlinNoise(PerlinCoordX, PerlinCoordY) * HeightIntensity + HeightOffset);
 
-                    if (Mathf.PerlinNoise(PerlinCoordX * 0.48f, PerlinCoordY * 0.48f) <= .4f)
+                    if (HeightIntensity > 0)
                     {
-                        biome = Biome.Desert;
-                    }
-                    else if (Mathf.PerlinNoise(PerlinCoordX * 0.6f, PerlinCoordY * 0.6f) <= .3f && HeightGen >= 90)
-                    {
-                        biome = Biome.Mountains;
+                        if (Mathf.PerlinNoise(PerlinCoordX * 0.48f, PerlinCoordY * 0.48f) <= .4f)
+                        {
+                            biome = Biome.Desert;
+                        }
+                        else if (Mathf.PerlinNoise(PerlinCoordX * 0.6f, PerlinCoordY * 0.6f) <= .3f && HeightGen >= 90)
+                        {
+                            biome = Biome.Mountains;
+                        }
+                        else biome = Biome.Plains;
                     }
                     else biome = Biome.Plains;
 
@@ -93,10 +97,14 @@ public class DataGenerator
                         if (WaterOffset - HeightGen > 0 && y >= HeightGen - 2)
                         {
                             BlockTypeToAssign = 9;
+
                             if (WaterOffset - HeightGen - 2 > 0)
                             {
-                                BlockTypeToAssign = 8;
-                                TempData[x, y + (WaterOffset - HeightGen - 2), z] = BlockTypeToAssign;
+                                for (int w = y + 1; w < WaterOffset - 1; w++)
+                                {
+                                    BlockTypeToAssign = 8;
+                                    TempData[x, w, z] = BlockTypeToAssign;
+                                }
                             }
                         }
 
