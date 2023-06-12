@@ -8,6 +8,7 @@ public class DataGenerator
     {
         public System.Action<int[,,]> OnComplete;
         public Vector3Int GenerationPoint;
+        public Biome biome;
     }
 
     private WorldGenerator GeneratorInstance;
@@ -36,14 +37,14 @@ public class DataGenerator
             if (DataToGenerate.Count > 0)
             {
                 GenData gen = DataToGenerate.Dequeue();
-                yield return GeneratorInstance.StartCoroutine(GenerateData(gen.GenerationPoint, gen.OnComplete));
+                yield return GeneratorInstance.StartCoroutine(GenerateData(gen.GenerationPoint, gen.biome, gen.OnComplete));
             }
 
             yield return null;
         }
     }
 
-    public IEnumerator GenerateData(Vector3Int offset, System.Action<int[,,]> callback)
+    public IEnumerator GenerateData(Vector3Int offset, Biome biome, System.Action<int[,,]> callback)
     {
         Vector3Int ChunkSize = WorldGenerator.ChunkSize;
         Vector2 NoiseOffset = GeneratorInstance.NoiseOffset;
@@ -71,43 +72,91 @@ public class DataGenerator
                     float PerlinCoordY = NoiseOffset.y + (z + (offset.z * 16f)) / ChunkSize.z * NoiseScale.y;
                     int HeightGen = Mathf.RoundToInt(Mathf.PerlinNoise(PerlinCoordX, PerlinCoordY) * HeightIntensity + HeightOffset);
 
+                    if (Mathf.PerlinNoise(PerlinCoordX * 0.48f, PerlinCoordY * 0.48f) <= .4f)
+                    {
+                        biome = Biome.Desert;
+                    }
+                    else if (Mathf.PerlinNoise(PerlinCoordX * 0.6f, PerlinCoordY * 0.6f) <= .3f && HeightGen >= 90)
+                    {
+                        biome = Biome.Mountains;
+                    }
+                    else biome = Biome.Plains;
+
+                    Debug.Log(biome);
+
                     for (int y = HeightGen; y >= 0; y--)
                     {
                         int BlockTypeToAssign = 0;
 
-                        // Set first layer to grass
-                        if (y == HeightGen)
-                        {
-                            if (y >= HeightOffset * 3.5f) BlockTypeToAssign = 9;
-                            else BlockTypeToAssign = 1;
-                        }
-
-                        //Set next 3 layers to dirt
-                        if (y < HeightGen && y > HeightGen - 4) BlockTypeToAssign = 2;
-
-                        //Set everything between the dirt range (inclusive) and 0 (exclusive) to stone
-                        if (y <= HeightGen - 4 && y > 0) BlockTypeToAssign = 3;
-
                         //Set everything at height 0 to bedrock.
-                        if (y == 0) BlockTypeToAssign = 4;
 
-                        if (WaterOffset - HeightGen > 0)
+                        if (WaterOffset - HeightGen > 0 && y >= HeightGen - 2)
                         {
                             BlockTypeToAssign = 9;
-                        }
-
-                        if (WaterOffset - HeightGen - 2 > 0)
-                        {
-                            BlockTypeToAssign = 8;
-                            TempData[x, y + WaterOffset - HeightGen - 2, z] = BlockTypeToAssign;
-                        }
-                        else
-                        {
-                            if (TempData[x, y, z] == 0)
+                            if (WaterOffset - HeightGen - 2 > 0)
                             {
-                                TempData[x, y, z] = BlockTypeToAssign;
+                                BlockTypeToAssign = 8;
+                                TempData[x, y + (WaterOffset - HeightGen - 2), z] = BlockTypeToAssign;
                             }
                         }
+
+                        else
+                        {
+                            switch (biome)
+                            {
+                                case (Biome.Plains):
+                                    BlockTypeToAssign = 1;
+
+                                    //Set next 3 layers to dirt
+                                    if (y < HeightGen && y > HeightGen - 4) BlockTypeToAssign = 2;
+
+                                    // Set everything else to stone
+                                    if (y <= HeightGen - 4 && y > 0) BlockTypeToAssign = 3;
+
+                                    break;
+
+                                case (Biome.Desert):
+
+                                    //Set next 3 layers to sand
+                                    if (y <= HeightGen && y > HeightGen - 4) BlockTypeToAssign = 9;
+
+                                    //Set everything else to stone
+                                    if (y <= HeightGen - 4 && y > 0) BlockTypeToAssign = 3;
+
+                                    break;
+
+                                case (Biome.Ocean):
+                                    BlockTypeToAssign = 9;
+
+                                    break;
+
+                                case (Biome.Mountains):
+                                    if (y >= 120) BlockTypeToAssign = 9;
+                                    else if (y == HeightGen) BlockTypeToAssign = 3;
+                                    else BlockTypeToAssign = 2;
+
+                                    if (y <= HeightGen - 4 && y > 0) BlockTypeToAssign = 3;
+
+                                    break;
+                            }
+                        }
+
+                        if (BlockTypeToAssign == 3)
+                        {
+                            if (Mathf.PerlinNoise(PerlinCoordX * 10 + y, PerlinCoordY * 10 + y) <= .25f)
+                            {
+                                BlockTypeToAssign = 10;
+                            }
+                            if (Mathf.PerlinNoise(PerlinCoordX * 11 * y, PerlinCoordY * 11 * y) <= .25f)
+                            {
+                                BlockTypeToAssign = 11;
+                            }
+                        }
+
+                        if (y == 0) BlockTypeToAssign = 4;
+
+                        TempData[x, y, z] = BlockTypeToAssign;
+
                     }
 
                     if (structureGen != null)

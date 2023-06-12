@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
+
+public enum Biome
+{
+    Plains,
+    Mountains,
+    Desert,
+    Ocean
+}
+
 public class WorldGenerator : MonoBehaviour
 {
     public static Dictionary<Vector3Int, int[,,]> WorldData;
