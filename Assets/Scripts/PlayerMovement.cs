@@ -17,10 +17,10 @@ public class PlayerMovement : MonoBehaviour {
 
     [Header("Walking")]
     [SerializeField] private float
-        walkingSpeed;
+        walkSpeed;
     [SerializeField] private float
-        runningSpeed,
-        crouchingSpeed,
+        runSpeed,
+        crouchSpeed,
         acceleration,
         deceleration;
 
@@ -28,6 +28,10 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private float jumpHeight;
     [SerializeField] private float jumpGravity, fallGravity, maxFallSpeed, coyoteTime;
     [SerializeField] private BufferTimer jumpBuffer;
+
+    [Header("Flying")]
+    [SerializeField] private float horizontalFlySpeed;
+    [SerializeField] private float verticalFlySpeed;
 
     //[Header("Slope Parameters")]
     //[SerializeField] private float
@@ -41,7 +45,7 @@ public class PlayerMovement : MonoBehaviour {
 
     private Vector3 currentVelocity;
 
-    private enum State { Grounded, Jumping, Falling }
+    private enum State { grounded, jumping, falling, flying }
     private float stateDur;
     private State state, prevState;
 
@@ -91,30 +95,36 @@ public class PlayerMovement : MonoBehaviour {
 
         // input
         Vector2 moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-        bool runDown = Input.GetKey(KeyCode.LeftShift),
-             crouchDown = Input.GetKey(KeyCode.C),
-             jumpDown = Input.GetKeyDown(KeyCode.Space);
+        bool runPressed = Input.GetKey(KeyCode.LeftShift),
+             crouchPressed = Input.GetKey(KeyCode.C),
+             jumpDown = Input.GetKeyDown(KeyCode.Space),
+             jumpPressed = Input.GetKey(KeyCode.Space),
+             flyDown = Input.GetKeyDown(KeyCode.F);
 
         // state of the player
-        bool onGround = groundContacts.Count != 0,
+        bool flying = state == State.flying,
+             onGround = groundContacts.Count != 0,
              jumpBuffed = jumpBuffer.Buffer(jumpDown),
-             canCoyote = prevState == State.Grounded && stateDur < coyoteTime && jumpBuffed,
+             canCoyote = prevState == State.grounded && stateDur < coyoteTime && jumpBuffed,
              jumpFinished = vel.y < 0;
 
         // horizontal movement
-        float speed = runDown ? runningSpeed
-                    : crouchDown ? crouchingSpeed
-                    : walkingSpeed,
+        float speed = flying ? horizontalFlySpeed
+                    : runPressed ? runSpeed
+                    : crouchPressed ? crouchSpeed
+                    : walkSpeed,
               currentAcceleration = moveInput != Vector2.zero ? acceleration : deceleration;
 
         Vector3 targetVelocity = new Vector3(moveInput.x, 0, moveInput.y) * speed + Vector3.up * vel.y;
         vel = Vector3.SmoothDamp(vel, targetVelocity, ref currentVelocity, currentAcceleration);
 
         // vertical movement
+        if (flyDown) ChangeState(state == State.flying ? State.falling : State.flying);
+
         if (stateDur == 0)
             switch (state) {
 
-                case State.Jumping:
+                case State.jumping:
                     vel.y = Mathf.Sqrt(jumpHeight * jumpGravity * 2);
                     break;
             }
@@ -122,25 +132,29 @@ public class PlayerMovement : MonoBehaviour {
         stateDur += Time.deltaTime;
         switch (state) {
 
-            case State.Grounded:
-                if (jumpBuffed) ChangeState(State.Jumping);
-                else if (!onGround) ChangeState(State.Falling);
+            case State.grounded:
+                if (jumpBuffed) ChangeState(State.jumping);
+                else if (!onGround) ChangeState(State.falling);
                 break;
 
-            case State.Jumping:
+            case State.jumping:
                 vel.y -= jumpGravity * Time.deltaTime;
 
-                if (jumpFinished) ChangeState(State.Falling);
+                if (jumpFinished) ChangeState(State.falling);
                 break;
 
-            case State.Falling:
+            case State.falling:
                 vel.y -= fallGravity * Time.deltaTime;
 
                 // clamp to fal speed
                 vel.y = Mathf.Max(vel.y, -maxFallSpeed);
 
-                if (onGround) ChangeState(State.Grounded);
-                if (canCoyote) ChangeState(State.Jumping);
+                if (onGround) ChangeState(State.grounded);
+                if (canCoyote) ChangeState(State.jumping);
+                break;
+
+            case State.flying:
+                vel.y = ((jumpPressed ? 1 : 0) - (crouchPressed ? 1 : 0)) * verticalFlySpeed;
                 break;
         }
 
