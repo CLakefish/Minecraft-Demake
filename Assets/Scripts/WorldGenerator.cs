@@ -47,7 +47,13 @@ public class WorldGenerator : MonoBehaviour
     public IEnumerator CreateChunk(Vector2Int ChunkCoord)
     {
         Vector3Int pos = new Vector3Int(ChunkCoord.x, 0, ChunkCoord.y);
+
         string chunkName = $"Chunk {ChunkCoord.x} {ChunkCoord.y}";
+
+        if (chunkName == "Chunk 0 0")
+        {
+            Debug.Log(1);
+        }
 
         GameObject newChunk = new GameObject(chunkName, new System.Type[]
         {

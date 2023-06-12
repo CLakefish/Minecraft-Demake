@@ -520,11 +520,11 @@ MonoBehaviour:
   ChunkMaterial: {fileID: 2100000, guid: c21caa2db23032a48be966ef6adf5e80, type: 2}
   ChunkPhysicMaterial: {fileID: 13400000, guid: 1d75145e928584f22b6bb77fed78402b, type: 2}
   droppedItem: {fileID: 6427164768734542920, guid: 115f5810866caf9499b8d1d9bb9372ef, type: 3}
-  NoiseScale: {x: 0.2, y: 0.2}
+  NoiseScale: {x: 0.1, y: 0.1}
   NoiseOffset: {x: 36.4, y: 32.44}
   HeightOffset: 32
-  HeightIntensity: 96.3
-  WaterOffset: 62
+  HeightIntensity: 126.72
+  WaterOffset: 64
 --- !u!114 &852762937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,9 +659,9 @@ MonoBehaviour:
       ForwardT: []
       BackT: []
   - TextureName: Sand
-    XTexture: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-    YTexture: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-    ZTexture: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+    XTexture: {fileID: 1044118217, guid: b69af13d59b703048867eaeb8f18d165, type: 3}
+    YTexture: {fileID: 1044118217, guid: b69af13d59b703048867eaeb8f18d165, type: 3}
+    ZTexture: {fileID: 1044118217, guid: b69af13d59b703048867eaeb8f18d165, type: 3}
     XTextureT: []
     YTextureT: []
     ZTextureT: []
@@ -699,9 +699,9 @@ MonoBehaviour:
       ForwardT: []
       BackT: []
   - TextureName: Sand
-    XTexture: {fileID: 1738480706, guid: b69af13d59b703048867eaeb8f18d165, type: 3}
-    YTexture: {fileID: 1738480706, guid: b69af13d59b703048867eaeb8f18d165, type: 3}
-    ZTexture: {fileID: 1738480706, guid: b69af13d59b703048867eaeb8f18d165, type: 3}
+    XTexture: {fileID: 1044118217, guid: b69af13d59b703048867eaeb8f18d165, type: 3}
+    YTexture: {fileID: 1044118217, guid: b69af13d59b703048867eaeb8f18d165, type: 3}
+    ZTexture: {fileID: 1044118217, guid: b69af13d59b703048867eaeb8f18d165, type: 3}
     XTextureT: []
     YTextureT: []
     ZTextureT: []
@@ -771,7 +771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1357211374}
-  RenderDistance: 5
+  RenderDistance: 6
 --- !u!4 &852762939
 Transform:
   m_ObjectHideFlags: 0
