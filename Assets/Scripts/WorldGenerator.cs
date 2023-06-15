@@ -71,13 +71,21 @@ public class WorldGenerator : MonoBehaviour
         ActiveChunks.Add(ChunkCoord, newChunk);
 
         int[,,] dataToApply = WorldData.ContainsKey(pos) ? WorldData[pos] : null;
+
+        MapGenerator meshMap = newChunk.AddComponent<MapGenerator>();
+
+        meshMap.seed = 1;
+        meshMap.offset = new Vector2(pos.x, pos.z);
+
+        meshMap.GenerateMap();
+
         Mesh meshToUse = null;
 
         if (dataToApply == null)
         {
             dataCreator.QueueDataToGenerate(new DataGenerator.GenData
             {
-                Map = map,
+                Map = meshMap,
                 continentalness = continentalness,
                 GenerationPoint = pos,
                 OnComplete = x => dataToApply = x
