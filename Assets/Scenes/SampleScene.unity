@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -153,6 +153,57 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1357211374}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &523169677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 523169679}
+  - component: {fileID: 523169678}
+  m_Layer: 0
+  m_Name: GameObject (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &523169678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523169677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 826f229542d57df43930cb1b0d5834c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seed: 5218
+  mapSize: {x: 16, y: 16}
+  offset: {x: 0, y: 0}
+  noiseScale: 20
+  octaves: 4
+  persistance: 0.5
+  lacunarity: 1.5
+--- !u!4 &523169679
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 523169677}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &656833777
 GameObject:
@@ -522,9 +573,105 @@ MonoBehaviour:
   droppedItem: {fileID: 6427164768734542920, guid: 115f5810866caf9499b8d1d9bb9372ef, type: 3}
   NoiseScale: {x: 0.1, y: 0.1}
   NoiseOffset: {x: 36.4, y: 32.44}
+  continentalness:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -1.0007662
+      value: 50.091545
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: -0.8806557
+      value: 0.0011389907
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: -0.13162418
+      value: 0.13517682
+      inSlope: 0.7078984
+      outSlope: 0.7078984
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: -0.12327108
+      value: 18.35755
+      inSlope: Infinity
+      outSlope: Infinity
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.006851912
+      value: 18.668667
+      inSlope: 4.721364
+      outSlope: 4.721364
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.14031138
+      value: 27.691078
+      inSlope: 21.685493
+      outSlope: 21.685493
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.29378977
+      value: 29.246675
+      inSlope: 39.289165
+      outSlope: 39.289165
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.29868555
+      value: 40.864212
+      inSlope: 0.42336106
+      outSlope: 0.42336106
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.5900389
+    - serializedVersion: 3
+      time: 0.64545625
+      value: 50.937508
+      inSlope: 14.894037
+      outSlope: 14.894037
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0082083
+      value: 53.579422
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   HeightOffset: 32
   HeightIntensity: 126.72
-  WaterOffset: 64
+  WaterOffset: 0
 --- !u!114 &852762937
 MonoBehaviour:
   m_ObjectHideFlags: 0

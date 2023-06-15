@@ -27,12 +27,15 @@ public class WorldGenerator : MonoBehaviour
     public Vector2 NoiseScale = Vector2.one;
     public Vector2 NoiseOffset = Vector2.zero;
     [Space]
+    public AnimationCurve continentalness;
     public int HeightOffset = 60;
     public float HeightIntensity = 5f;
     public int WaterOffset;
 
     private ChunkMeshGenerator meshCreator;
     private DataGenerator dataCreator;
+    private MapGenerator map;
+
     void Start()
     {
         WorldData = new Dictionary<Vector3Int, int[,,]>();
@@ -41,6 +44,8 @@ public class WorldGenerator : MonoBehaviour
         meshCreator = new ChunkMeshGenerator(TextureLoaderInstance, this);
         dataCreator = new DataGenerator(this, GetComponent<StructureGenerator>());
 
+        map = FindObjectOfType<MapGenerator>();
+        map.GenerateMap();
         NoiseOffset = new Vector2(Random.Range(-1000, 1000), Random.Range(-1000, 1000));
     }
 
@@ -72,6 +77,8 @@ public class WorldGenerator : MonoBehaviour
         {
             dataCreator.QueueDataToGenerate(new DataGenerator.GenData
             {
+                Map = map,
+                continentalness = continentalness,
                 GenerationPoint = pos,
                 OnComplete = x => dataToApply = x
             });
