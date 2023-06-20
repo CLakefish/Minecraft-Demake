@@ -163,6 +163,13 @@ public class DataGenerator
 
                         if (y < HeightGen - 6 && Noise.Perlin3D((x + offset.x * 16f) * .1f, (y + offset.y * 16f) * .1f, (z + offset.z * 16f) * .1f) >= .5f) BlockTypeToAssign = 0;
 
+                        if (BlockTypeToAssign == 3)
+                        {
+                            if (Noise.Perlin3D((x + offset.x * 16f) * .22f, (y + offset.y * 16f) * .22f, (z + offset.z * 16f) * .22f) <= .29f) BlockTypeToAssign = 10;
+
+                            if (Noise.Perlin3D((x + offset.x * 16f) * .3f, (y + offset.y * 16f) * .3f, (z + offset.z * 16f) * .3f) >= .6f) BlockTypeToAssign = 11;
+                        }
+
                         if (y == 0) BlockTypeToAssign = 4;
 
                         TempData[x, y, z] = BlockTypeToAssign;

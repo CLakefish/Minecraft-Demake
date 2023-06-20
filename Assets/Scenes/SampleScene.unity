@@ -671,7 +671,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   HeightOffset: 32
   HeightIntensity: 126.72
-  WaterOffset: 0
+  WaterOffset: 33
 --- !u!114 &852762937
 MonoBehaviour:
   m_ObjectHideFlags: 0
